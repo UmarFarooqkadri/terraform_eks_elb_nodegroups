@@ -1,0 +1,53 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jocatalin
+  labels:
+    app: jocatalin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jocatalin
+  template:
+    metadata:
+      labels:
+        app: jocatalin
+    spec:
+      containers:
+      - name: jocatalin
+        image: jocatalin/kubernetes-bootcamp:v2
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: internal-jocatalin-service
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: nlb
+    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: 'true'
+    service.beta.kubernetes.io/aws-load-balancer-internal: 0.0.0.0/0
+spec:
+  selector:
+    app: jocatalin
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: external-jocatalin-service
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: nlb
+    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: 'true'
+spec:
+  selector:
+    app: jocatalin
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 80
