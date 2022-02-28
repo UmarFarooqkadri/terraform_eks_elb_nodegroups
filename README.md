@@ -1,6 +1,6 @@
 # Terraform EKS Cluster Creation
-Intro
-Create IAM Role for EKS Cluster
+##Intro
+##Create IAM Role for EKS Cluster
 Attach AmazonEKSClusterPolicy to EKS Role
 Create AWS EKS Cluster
 Create IAM Role for EKS Node Group
